@@ -17,18 +17,21 @@ public class jsonDifference
         this.secondJson = secondJson;
     }
 
+    //Метод который проверяет различия между двумя JSON строками. Вывод в виде листа из мап
     public ArrayList <HashMap <String, String> > jsonEquals() throws JsonProcessingException
     {
 
         ArrayList <HashMap <String, String>> result = new ArrayList();
+
+        //Парсим строки на мапы
         HashMap <String, String> firstJsonMap = new Gson().fromJson(firstJson, new TypeToken<HashMap<String, Object>>() {}.getType());
         HashMap <String, String> secondJsonMap = new Gson().fromJson(secondJson, new TypeToken<HashMap<String, Object>>() {}.getType());
 
+        //Мапы для записи различий
         HashMap <String, String> firstJsonDiff = new HashMap<>();
         HashMap <String, String> secondJsonDiff = new HashMap<>();
 
-        //TODO Сравнение мап
-
+        //Проверка на различия между ключ1-ключ2, значение1-значение2, при различии происходит запись в мапы пары ключ-значение
         for (Map.Entry<String, String> firstEntry : firstJsonMap.entrySet())
         {
             for (Map.Entry<String, String> secondEntry : secondJsonMap.entrySet())
@@ -42,6 +45,7 @@ public class jsonDifference
             }
         }
 
+        //Проверка на содержание ключа1 в мапе2
         for (Map.Entry<String, String> firstEntry : firstJsonMap.entrySet())
         {
             if (!secondJsonMap.containsKey(firstEntry.getKey()))
@@ -50,6 +54,7 @@ public class jsonDifference
             }
         }
 
+        //Проверка на содержание ключа2 в мапе1
         for (Map.Entry<String, String> secondEntry : secondJsonMap.entrySet())
         {
             if (!firstJsonMap.containsKey(secondEntry.getKey()))
@@ -58,6 +63,7 @@ public class jsonDifference
             }
         }
 
+        //Запись результат в лист
         result.add(firstJsonDiff);
         result.add(secondJsonDiff);
 
